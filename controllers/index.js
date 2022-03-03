@@ -49,10 +49,9 @@ const partsController = async (req, res) => {
 
 const partController = async (req, res) => {
   const { params } = req;
-  const part = params.part ? +params.part - 1 : 1;
-  if (part > transformedData.length - 1) {
-    res.status(404).json({ status: false, message: 'No more parts' });
-  }
+  let part = params.part ? +params.part - 1 : 1;
+  part = part < 0 ? 0 : part;
+  part = part > transformedData.length - 1 ? transformedData.length - 1 : part;
   res.status(200).json({
     status: true,
     message: 'List of parts was successfully fetched',
