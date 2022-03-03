@@ -26,18 +26,25 @@ const splittedData = dataSpiltter({
   totalItemsPerPart: 20,
 });
 
+const targetPath = path.join(__dirname, '../data/transformed-data.json');
+if (fs.existsSync(targetPath)) {
+  fs.unlinkSync(targetPath);
+}
+fs.writeFileSync(targetPath, JSON.stringify(splittedData), {
+  flag: 'wx',
+  encoding: 'utf-8',
+});
+
 splittedData.forEach((element, index) => {
-  const targetPath = path.join(
+  const splittedTargetPath = path.join(
     __dirname,
     `../data/splitted-data/${index + 1}.json`
   );
-  if (fs.existsSync(targetPath)) {
-    fs.unlinkSync(targetPath);
+  if (fs.existsSync(splittedTargetPath)) {
+    fs.unlinkSync(splittedTargetPath);
   }
-  setTimeout(() => {
-    fs.writeFileSync(targetPath, JSON.stringify(element), {
-      flag: 'wx',
-      encoding: 'utf-8',
-    });
-  }, 1000);
+  fs.writeFileSync(splittedTargetPath, JSON.stringify(element), {
+    flag: 'wx',
+    encoding: 'utf-8',
+  });
 });
